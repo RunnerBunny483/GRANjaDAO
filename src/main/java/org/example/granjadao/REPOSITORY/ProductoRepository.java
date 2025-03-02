@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public class ProductoRepository {
-    private static final String FILE_PATH = "src/main/resources/Productos.txt";
+    private static final String rutaTXT = "src/main/resources/Productos.txt";
 
     public List<Producto> leerProductos() throws IOException {
         List<Producto> productos = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaTXT))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");

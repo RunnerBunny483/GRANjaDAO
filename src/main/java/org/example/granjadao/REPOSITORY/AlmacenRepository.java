@@ -23,18 +23,23 @@ public class AlmacenRepository {
 //    }
 
     public List<Almacen> getAllAlmacenes() throws Exception {
+        //Convertir objetos a xml
         JAXBContext context = JAXBContext.newInstance(Almacenes.class);
+        //Convierte xml a objetos
         Unmarshaller unmarshaller = context.createUnmarshaller();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(xml);
         if (inputStream == null) {
             throw new RuntimeException("No encuentro " +xml);
         }
+        //Convierte el contenido del xml en un objeto de tipo Almacenes
         Almacenes almacenes = (Almacenes) unmarshaller.unmarshal(inputStream);
         return almacenes.getAlmacenes();
     }
 
+    //Guarda un objeto almacen en el archivo xml
     public Almacen saveAlmacen(Almacen almacen) throws Exception {
         JAXBContext context = JAXBContext.newInstance(Almacen.class);
+        //Convertir objetos java a xml
         Marshaller marshaller = context.createMarshaller();
         marshaller.marshal(almacen, new File(xml));
         return almacen;
