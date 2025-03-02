@@ -4,8 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,29 +21,43 @@ public class Trabajador {
     private String dni;
 
     @Size(max = 50)
-    @NotNull
+    @NotNull(message = "El nombre no puede ser nulo")
+    @Pattern(
+            regexp = "^[A-ZÁÉÍÓÚÑ][a-záéíóúñ0-9 _-]*$",
+            message = "Nombre de trabajador empieza con mayúscula y solo con caracteres alfabéticos"
+    )
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
     @Size(max = 100)
-    @NotNull
+    @NotNull(message = "Los apellidos no pueden ser nulos")
+    @Pattern(
+            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ]+$",
+            message = "Apellidos de trabajador solo con caracteres alfabéticos"
+    )
     @Column(name = "apellidos", nullable = false, length = 100)
     private String apellidos;
 
     @Size(max = 100)
+    @Email(message = "El correo electrónico no es válido")
     @Column(name = "email", length = 100)
     private String email;
 
     @Size(max = 15)
+    @Pattern(
+            regexp = "^[6,9][0-9]{8}$",
+            message = "Teléfono de trabajador 9 dígitos que empiecen por 6 o 9"
+    )
     @Column(name = "telefono", length = 15)
     private String telefono;
 
-    @NotNull
+    @NotNull(message = "El sueldo no puede ser nulo")
+    @Positive(message = "El sueldo debe ser un valor positivo, incluido 0")
     @Column(name = "sueldo", nullable = false, precision = 10, scale = 2)
     private BigDecimal sueldo;
 
     @Size(max = 50)
-    @NotNull
+    @NotNull(message = "El puesto no puede ser nulo")
     @Column(name = "puesto", nullable = false, length = 50)
     private String puesto;
 }
