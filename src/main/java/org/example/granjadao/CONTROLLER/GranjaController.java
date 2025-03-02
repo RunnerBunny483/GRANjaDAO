@@ -43,7 +43,7 @@ public class GranjaController {
     }
 
     @Cacheable
-    @GetMapping("/trabajadores/{id}")
+    @GetMapping("/trabajadores/{dni}")
     public ResponseEntity<?> getTrabajadorById(@PathVariable String dni) {
         try{
             Trabajador trabajador = granjaService.findTrabajadorById(dni);
@@ -103,6 +103,48 @@ public class GranjaController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
     //----- PUT -----
+
+    @PutMapping("/animales/{id}")
+    public ResponseEntity<?> updateAnimal(@PathVariable Integer id, @Valid @RequestBody Animal animal) {
+        try{
+            Animal animalUpdate = granjaService.updateAnimal(id, animal);
+            return ResponseEntity.ok().body(animalUpdate);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/trabajadores/{dni}")
+    public ResponseEntity<?> updateTrabajador(@PathVariable String dni, @Valid @RequestBody Trabajador trabajador) {
+        try{
+            Trabajador trabajadorUpdate = granjaService.updateTrabajador(dni, trabajador);
+            return ResponseEntity.ok().body(trabajadorUpdate);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
     //----- DELETE -----
+
+    @DeleteMapping("/animales/{id}")
+    public ResponseEntity<?> deleteAnimal(@PathVariable Integer id) {
+        try{
+            granjaService.deleteAnimalById(id);
+            return ResponseEntity.ok().body("Animal con id "+id+" eliminado correctamente.");
+        } catch (RuntimeException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/trabajadores/{dni}")
+    public ResponseEntity<?> deleteTrabajador(@PathVariable String dni) {
+        try{
+            granjaService.deleteTrabajadorById(dni);
+            return ResponseEntity.ok().body("Trabajador con dni "+dni+" eliminado correctamente.");
+        } catch (RuntimeException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
 }
