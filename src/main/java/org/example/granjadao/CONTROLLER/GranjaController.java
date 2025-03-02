@@ -76,7 +76,7 @@ public class GranjaController {
         return ResponseEntity.ok(listaProductos);
     }
 
-    @GetMapping("/establecimientos")
+    @GetMapping("/almacenes")
     public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
         List<Almacen> listaAlamacenes= granjaService.getAllAlmacenes();
         return ResponseEntity.ok(listaAlamacenes);
