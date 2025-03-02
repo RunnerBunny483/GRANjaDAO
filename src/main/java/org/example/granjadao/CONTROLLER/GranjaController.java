@@ -29,15 +29,13 @@ public class GranjaController {
     private AnimalRepository animalRepository;
     private TrabajadorRepository trabajadorRepository;
     private ProductoRepository productoRepository;
-    private AlmacenRepository almacenRepository;
 
     @Autowired
-    public GranjaController(GranjaService granjaService, AnimalRepository animalRepository, TrabajadorRepository trabajadorRepository, ProductoRepository productoRepository, AlmacenRepository almacenRepository) {
+    public GranjaController(GranjaService granjaService, AnimalRepository animalRepository, TrabajadorRepository trabajadorRepository, ProductoRepository productoRepository) {
         this.granjaService = granjaService;
         this.animalRepository = animalRepository;
         this.trabajadorRepository = trabajadorRepository;
         this.productoRepository = productoRepository;
-        this.almacenRepository = almacenRepository;
     }
 
     //GET
@@ -49,7 +47,7 @@ public class GranjaController {
 
     @GetMapping("/animales")
     public ResponseEntity<List<Animal>> getAnimales() {
-        List<Animal> listaAnimales= animalRepository.findAll();
+        List<Animal> listaAnimales= granjaService.getAllAnimales();
         return ResponseEntity.ok(listaAnimales);
     }
 
@@ -61,7 +59,7 @@ public class GranjaController {
 
     @GetMapping("/establecimientos")
     public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
-        List<Almacen> listaAlamacenes= almacenRepository.getAlmacenes();
+        List<Almacen> listaAlamacenes= granjaService.getAllAlmacenes();
         return ResponseEntity.ok(listaAlamacenes);
     }
     //POST
