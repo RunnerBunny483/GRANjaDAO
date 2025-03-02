@@ -75,4 +75,34 @@ public class GranjaService {
     }
 
     //----- JPA:Trabajador -----
+
+    public List<Trabajador> getAllTrabajadores() {
+        return trabajadorRepository.findAll();
+    }
+
+    public Trabajador findTrabajadorById(String dni) {
+        return trabajadorRepository.findById(dni).orElseThrow(() -> new RuntimeException("Trabajador no encontrado."));
+    }
+
+    public Trabajador saveTrabajador(Trabajador trabajador) {
+        return trabajadorRepository.save(trabajador);
+    }
+
+    public Trabajador updateTrabajador(String dni, Trabajador trabajador) {
+        Trabajador trabajadorUpdate = trabajadorRepository.findById(dni).orElseThrow(() -> new RuntimeException("Trabajador no encontrado."));
+
+        trabajadorUpdate.setNombre(trabajador.getNombre());
+        trabajadorUpdate.setApellidos(trabajador.getApellidos());
+        trabajadorUpdate.setEmail(trabajador.getEmail());
+        trabajadorUpdate.setTelefono(trabajador.getTelefono());
+        trabajadorUpdate.setSueldo(trabajador.getSueldo());
+        trabajadorUpdate.setPuesto(trabajador.getPuesto());
+
+        return trabajadorRepository.save(trabajadorUpdate);
+    }
+
+    public void deleteTrabajadorById(String dni) {
+        Trabajador trabajadorDelete = trabajadorRepository.findById(dni).orElseThrow(() -> new RuntimeException("Trabajador no encontrado."));
+        trabajadorRepository.delete(trabajadorDelete);
+    }
 }
