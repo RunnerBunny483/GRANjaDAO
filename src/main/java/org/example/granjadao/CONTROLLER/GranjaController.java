@@ -25,20 +25,20 @@ import java.util.List;
 @CacheConfig(cacheNames = "granja")
 public class GranjaController {
 
-    @Autowired
     private GranjaService granjaService;
-
-    @Autowired
     private AnimalRepository animalRepository;
-
-    @Autowired
     private TrabajadorRepository trabajadorRepository;
-
-    @Autowired
     private ProductoRepository productoRepository;
+    private AlmacenRepository almacenRepository;
 
     @Autowired
-    private AlmacenRepository almacenRepository;
+    public GranjaController(GranjaService granjaService, AnimalRepository animalRepository, TrabajadorRepository trabajadorRepository, ProductoRepository productoRepository, AlmacenRepository almacenRepository) {
+        this.granjaService = granjaService;
+        this.animalRepository = animalRepository;
+        this.trabajadorRepository = trabajadorRepository;
+        this.productoRepository = productoRepository;
+        this.almacenRepository = almacenRepository;
+    }
 
     //GET
     @GetMapping("/trabajadores")
