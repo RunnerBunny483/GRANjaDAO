@@ -6,11 +6,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.Cache;
+import org.springframework.cache.annotation.CacheConfig;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "trabajadores")
+@CacheConfig(cacheNames = "trabajadores")
 public class Trabajador {
     @Id
     @Size(max = 20)
