@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <almacenes>
     <almacen>
         <id>1</id>
@@ -18,7 +18,7 @@
         <id>3</id>
         <nombre>Almacén Sur</nombre>
         <ubicacion>Sevilla</ubicacion>
-        <numero_trabajadores>20</numero_trabajadores>
-        <metrosCuadrados>250.75</metrosCuadrados>
+        <numero_trabajadores>40</numero_trabajadores>
+        <metrosCuadrados>300.0</metrosCuadrados>
     </almacen>
 </almacenes>

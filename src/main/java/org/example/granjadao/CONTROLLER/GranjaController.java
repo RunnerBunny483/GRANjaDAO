@@ -40,6 +40,26 @@ public class GranjaController {
         return ResponseEntity.ok(listaTrabajadpres);
     }
 
+    @GetMapping("/animales")
+    public ResponseEntity<List<Animal>> getAnimales() {
+        List<Animal> listaAnimales= granjaService.getAllAnimales();
+        return ResponseEntity.ok(listaAnimales);
+    }
+
+    @GetMapping("/productos")
+    public ResponseEntity<List<Producto>> getProductos() throws IOException {
+        List<Producto> listaProductos= granjaService.getAllProductos();
+        return ResponseEntity.ok(listaProductos);
+    }
+
+    @GetMapping("/almacenes")
+    public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
+        List<Almacen> listaAlamacenes= granjaService.getAllAlmacenes();
+        return ResponseEntity.ok(listaAlamacenes);
+    }
+
+    //----- GET POR ID -----
+
     @Cacheable
     @GetMapping("/trabajadores/{dni}")
     public ResponseEntity<?> getTrabajadorById(@PathVariable String dni) {
@@ -49,12 +69,6 @@ public class GranjaController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
-    }
-
-    @GetMapping("/animales")
-    public ResponseEntity<List<Animal>> getAnimales() {
-        List<Animal> listaAnimales= granjaService.getAllAnimales();
-        return ResponseEntity.ok(listaAnimales);
     }
 
     @Cacheable
@@ -68,12 +82,6 @@ public class GranjaController {
         }
     }
 
-    @GetMapping("/productos")
-    public ResponseEntity<List<Producto>> getProductos() throws IOException {
-        List<Producto> listaProductos= granjaService.getAllProductos();
-        return ResponseEntity.ok(listaProductos);
-    }
-
     @Cacheable
     @GetMapping("/productos/{id}")
     public ResponseEntity<?> getProductoById(@PathVariable Integer id) {
@@ -85,19 +93,13 @@ public class GranjaController {
         }
     }
 
-    @GetMapping("/almacenes")
-    public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
-        List<Almacen> listaAlamacenes= granjaService.getAllAlmacenes();
-        return ResponseEntity.ok(listaAlamacenes);
-    }
-
     @Cacheable
     @GetMapping("/almacenes/{id}")
     public ResponseEntity<?> getAlmacenesById(@PathVariable Integer id) {
         try{
-            Producto producto = granjaService.findProductoById(id);
-            return ResponseEntity.ok().body(producto);
-        } catch (IOException e){
+            Almacen almacen = granjaService.findAlmacenById(id);
+            return ResponseEntity.ok().body(almacen);
+        } catch (Exception e){
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -134,6 +136,16 @@ public class GranjaController {
         }
     }
 
+    @PostMapping("/almacenes")
+    public ResponseEntity<?> addAlmacen(@Valid @RequestBody Almacen almacen) {
+        try{
+            Almacen almacenSave = granjaService.saveAlmacen(almacen);
+            return ResponseEntity.status(201).body(almacenSave);
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     //----- PUT -----
 
     @PutMapping("/animales/{id}")
@@ -161,6 +173,16 @@ public class GranjaController {
         try {
             Producto productoUpdate = granjaService.updateProducto(id, producto);
             return ResponseEntity.ok().body(productoUpdate);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/almacenes/{id}")
+    public ResponseEntity<?> updateAlmacen(@PathVariable int id, @Valid @RequestBody Almacen almacen) {
+        try {
+            Almacen almacenUpdate = granjaService.updateAlmacen(id, almacen);
+            return ResponseEntity.ok().body(almacenUpdate);
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -194,6 +216,16 @@ public class GranjaController {
             granjaService.deleteProductoById(id);
             return ResponseEntity.ok().body("Producto con id "+id+" eliminado correctamente.");
         } catch (IOException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/almacenes/{id}")
+    public ResponseEntity<?> deleteAlmacen(@PathVariable Integer id) {
+        try{
+            granjaService.deleteAlmacenById(id);
+            return ResponseEntity.ok().body("Almacen con id "+id+" eliminado correctamente.");
+        } catch (Exception e){
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }

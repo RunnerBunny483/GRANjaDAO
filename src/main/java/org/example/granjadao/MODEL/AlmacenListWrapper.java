@@ -8,7 +8,7 @@ import java.util.List;
 
 @XmlRootElement(name = "almacenes")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Almacenes {
+public class AlmacenListWrapper {
     @XmlElement(name = "almacen")
     private List<Almacen> almacenes;
 

@@ -40,6 +40,35 @@ public class GranjaService {
         return almacenRepository.getAllAlmacenes();
     }
 
+    public Almacen findAlmacenById(int id) throws Exception {
+        return almacenRepository.findById(id);
+    }
+
+    public Almacen updateAlmacen(int id, Almacen almacen) throws Exception {
+        // Obtener la lista completa de almacenes
+        List<Almacen> almacenes = almacenRepository.getAllAlmacenes();
+
+        // Buscar el almacén por su ID
+        Almacen almacenExistente = almacenes.stream()
+                .filter(a -> a.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Almacén no encontrado con ID: " + id));
+
+        // Actualizar los datos del almacén
+        almacenExistente.setNombre(almacen.getNombre());
+        almacenExistente.setUbicacion(almacen.getUbicacion());
+        almacenExistente.setNumero_trabajadores(almacen.getNumero_trabajadores());
+        almacenExistente.setMetrosCuadrados(almacen.getMetrosCuadrados());
+
+        // Guardar la lista actualizada en el archivo XML
+        almacenRepository.guardarAlmacenesEnXML(almacenes);
+
+        return almacenExistente;
+    }
+
+    public void deleteAlmacenById(int id) throws Exception {
+        almacenRepository.deleteAlmacen(id);
+    }
 
     //----- TXT:Producto -----
 
