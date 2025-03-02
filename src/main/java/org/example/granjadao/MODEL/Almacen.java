@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.*;
 @AllArgsConstructor
 @XmlRootElement(name = "almacen")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Establecimiento {
+public class Almacen {
     private Integer id;
     private String nombre;
     private String ubicacion;
