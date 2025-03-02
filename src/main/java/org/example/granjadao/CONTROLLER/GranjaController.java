@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.List;
 
@@ -59,9 +58,9 @@ public class GranjaController {
         return ResponseEntity.ok(listaProductos);
     }
 
-    @GetMapping("/establecimientos")
+    @GetMapping("/almacenes")
     public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
-        List<Almacen> listaAlamacenes= almacenRepository.getAlmacenes();
+        List<Almacen> listaAlamacenes= almacenRepository.getAllAlmacenes();
         return ResponseEntity.ok(listaAlamacenes);
     }
     //POST
