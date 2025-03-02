@@ -6,13 +6,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "trabajadores")
 public class Trabajador {
@@ -47,17 +47,4 @@ public class Trabajador {
     @NotNull
     @Column(name = "puesto", nullable = false, length = 50)
     private String puesto;
-
-    public Trabajador() {
-    }
-
-    public Trabajador(String dni, String nombre, String apellidos, String email, String telefono, BigDecimal sueldo, String puesto) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.email = email;
-        this.telefono = telefono;
-        this.sueldo = sueldo;
-        this.puesto = puesto;
-    }
 }

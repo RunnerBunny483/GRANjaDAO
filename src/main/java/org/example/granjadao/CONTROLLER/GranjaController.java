@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,20 +25,18 @@ import java.util.List;
 @CacheConfig(cacheNames = "granja")
 public class GranjaController {
 
-    @Autowired
     private GranjaService granjaService;
-
-    @Autowired
     private AnimalRepository animalRepository;
-
-    @Autowired
     private TrabajadorRepository trabajadorRepository;
-
-    @Autowired
     private ProductoRepository productoRepository;
 
     @Autowired
-    private AlmacenRepository almacenRepository;
+    public GranjaController(GranjaService granjaService, AnimalRepository animalRepository, TrabajadorRepository trabajadorRepository, ProductoRepository productoRepository) {
+        this.granjaService = granjaService;
+        this.animalRepository = animalRepository;
+        this.trabajadorRepository = trabajadorRepository;
+        this.productoRepository = productoRepository;
+    }
 
     //GET
     @GetMapping("/trabajadores")
@@ -48,7 +47,7 @@ public class GranjaController {
 
     @GetMapping("/animales")
     public ResponseEntity<List<Animal>> getAnimales() {
-        List<Animal> listaAnimales= animalRepository.findAll();
+        List<Animal> listaAnimales= granjaService.getAllAnimales();
         return ResponseEntity.ok(listaAnimales);
     }
 
@@ -58,9 +57,9 @@ public class GranjaController {
         return ResponseEntity.ok(listaProductos);
     }
 
-    @GetMapping("/almacenes")
+    @GetMapping("/establecimientos")
     public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
-        List<Almacen> listaAlamacenes= almacenRepository.getAllAlmacenes();
+        List<Almacen> listaAlamacenes= granjaService.getAllAlmacenes();
         return ResponseEntity.ok(listaAlamacenes);
     }
     //POST
