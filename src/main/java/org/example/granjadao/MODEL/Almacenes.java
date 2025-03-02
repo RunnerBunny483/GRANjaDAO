@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import java.util.List;
 
 @XmlRootElement(name = "almacenes")
-@XmlAccessorType(XmlAccessType.FIELD) // Use fields for mapping
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Almacenes {
-    @XmlElement(name = "almacen") // Explicitly map this field
+    @XmlElement(name = "almacen")
     private List<Almacen> almacenes;
 
     public List<Almacen> getAlmacenes() {
