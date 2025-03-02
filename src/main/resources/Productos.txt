@@ -1,3 +1,3 @@
-1, Leche Entera, Leche entera de vaca, 10.0, 2
-2, Huevos, Huevos de gallina campera, 5.0, 12
-3, Filete de ternera, Filete de ternera de ganadería extensiva, 7.0, 1
+1, Leche Entera, Leche entera de vaca,10.0,2
+2, Huevos, Huevos de gallina campera,5.0,12
+3, Filete de ternera, Filete de ternera de ganadería extensiva,7.0,1
