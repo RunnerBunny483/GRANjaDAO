@@ -30,7 +30,7 @@ public class Trabajador {
     @Size(max = 100)
     @NotNull(message = "Los apellidos no pueden ser nulos")
     @Pattern(
-            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ]+$",
+            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ ]+$",
             message = "Apellidos de trabajador solo con caracteres alfabéticos"
     )
     @Column(name = "apellidos", nullable = false, length = 100)
@@ -109,15 +109,15 @@ public class Trabajador {
     }
 
     public @Size(max = 100) @NotNull(message = "Los apellidos no pueden ser nulos") @Pattern(
-            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ]+$",
+            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ ]+$",
             message = "Apellidos de trabajador solo con caracteres alfabéticos"
     ) String getApellidos() {
         return apellidos;
     }
 
     public void setApellidos(@Size(max = 100) @NotNull(message = "Los apellidos no pueden ser nulos") @Pattern(
-            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ]+$",
-            message = "Apellidos de trabajador solo con caracteres alfabéticos"
+            regexp = "^[A-ZÁÉÍÓÚÑa-záéíóúñ ]+$",
+            message = "Apellidos de trabajador solo con caracteres alfabéticos o espacios"
     ) String apellidos) {
         this.apellidos = apellidos;
     }

@@ -11,10 +11,6 @@ import org.example.granjadao.REPOSITORY.TrabajadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +22,7 @@ public class GranjaService {
     private final AlmacenRepository almacenRepository;
     private final ProductoRepository productoRepository;
 
+    @Autowired
     public GranjaService(AnimalRepository animalRepository, TrabajadorRepository trabajadorRepository, AlmacenRepository almacenRepository, ProductoRepository productoRepository) {
         this.animalRepository = animalRepository;
         this.trabajadorRepository = trabajadorRepository;
@@ -43,8 +40,43 @@ public class GranjaService {
         return almacenRepository.getAllAlmacenes();
     }
 
+
     //----- TXT:Producto -----
 
+    public List<Producto> getAllProductos() throws IOException {
+        return productoRepository.leerProductos();
+    }
+
+    public Producto findProductoById(int id) throws IOException {
+        return productoRepository.findById(id);
+    }
+
+    public Producto saveProducto(Producto producto) throws IOException {
+        return productoRepository.escribirProducto(producto);
+    }
+
+    public Producto updateProducto(Integer id, Producto producto) throws Exception {
+        List<Producto> productos = productoRepository.leerProductos();
+        // Buscar el producto por su ID
+        Producto productoUpdate = productos.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
+
+        productoUpdate.setNombre(producto.getNombre());
+        productoUpdate.setDescripcion(producto.getDescripcion());
+        productoUpdate.setPrecio(producto.getPrecio());
+        productoUpdate.setCantidad(producto.getCantidad());
+
+        //guardar la lista actualizada en el archivo
+        productoRepository.escribirProductos(productos);
+
+        return productoUpdate;
+    }
+
+    public void deleteProductoById(int id) throws IOException {
+        productoRepository.deleteProducto(id);
+    }
 
     //----- MongoDB:Animal -----
 

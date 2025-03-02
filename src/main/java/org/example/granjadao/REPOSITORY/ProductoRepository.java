@@ -3,16 +3,16 @@ package org.example.granjadao.REPOSITORY;
 import org.example.granjadao.MODEL.Producto;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductoRepository {
     private static final String rutaTXT = "src/main/resources/Productos.txt";
 
+    //Leer
     public List<Producto> leerProductos() throws IOException {
         List<Producto> productos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(rutaTXT))) {
@@ -32,5 +32,63 @@ public class ProductoRepository {
             }
         }
         return productos;
+    }
+
+    //Escribir
+    public Producto escribirProducto(Producto producto) throws IOException {
+        List<Producto> productos = leerProductos();
+
+        // Verificar si el ID ya existe
+        boolean idExiste = productos.stream().anyMatch(p -> p.getId() == producto.getId());
+        if (idExiste) {
+            throw new IllegalArgumentException("El ID del producto ya existe: " + producto.getId());
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaTXT, true))) { // Modo append
+            String linea = producto.getId() + "," +
+                    producto.getNombre() + "," +
+                    producto.getDescripcion() + "," +
+                    producto.getPrecio() + "," +
+                    producto.getCantidad();
+
+            bw.write(linea);
+            bw.newLine();
+        }
+        return producto;
+    }
+
+    public void escribirProductos(List<Producto> productos) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaTXT))) {
+            for (Producto producto : productos) {
+                String linea = producto.getId() + "," +
+                        producto.getNombre() + "," +
+                        producto.getDescripcion() + "," +
+                        producto.getPrecio() + "," +
+                        producto.getCantidad();
+
+                bw.write(linea);
+                bw.newLine();
+            }
+        }
+    }
+
+
+    //Borrar
+    public void deleteProducto(int id) throws IOException {
+        List<Producto> productos = leerProductos();
+        // Buscar el producto por su ID
+        Producto productoDelete = productos.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
+
+        productos.remove(productoDelete);
+        escribirProductos(productos);
+    }
+
+    //Buscar por id
+    public Producto findById(int id) throws IOException {
+        List<Producto> productos = leerProductos();
+        return productos.stream().filter(producto -> producto.getId() == id).findFirst().orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
 }

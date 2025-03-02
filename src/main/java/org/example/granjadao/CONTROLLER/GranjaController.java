@@ -26,12 +26,10 @@ import java.util.List;
 public class GranjaController {
 
     private GranjaService granjaService;
-    private ProductoRepository productoRepository;
 
     @Autowired
-    public GranjaController(GranjaService granjaService, ProductoRepository productoRepository) {
+    public GranjaController(GranjaService granjaService) {
         this.granjaService = granjaService;
-        this.productoRepository = productoRepository;
     }
 
     //----- GET -----
@@ -72,14 +70,36 @@ public class GranjaController {
 
     @GetMapping("/productos")
     public ResponseEntity<List<Producto>> getProductos() throws IOException {
-        List<Producto> listaProductos= productoRepository.leerProductos();
+        List<Producto> listaProductos= granjaService.getAllProductos();
         return ResponseEntity.ok(listaProductos);
+    }
+
+    @Cacheable
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<?> getProductoById(@PathVariable Integer id) {
+        try{
+            Producto producto = granjaService.findProductoById(id);
+            return ResponseEntity.ok().body(producto);
+        } catch (IOException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 
     @GetMapping("/almacenes")
     public ResponseEntity<List<Almacen>> getAlmacenes() throws Exception {
         List<Almacen> listaAlamacenes= granjaService.getAllAlmacenes();
         return ResponseEntity.ok(listaAlamacenes);
+    }
+
+    @Cacheable
+    @GetMapping("/almacenes/{id}")
+    public ResponseEntity<?> getAlmacenesById(@PathVariable Integer id) {
+        try{
+            Producto producto = granjaService.findProductoById(id);
+            return ResponseEntity.ok().body(producto);
+        } catch (IOException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 
     //----- POST -----
@@ -100,6 +120,16 @@ public class GranjaController {
             Trabajador trabajadorSave = granjaService.saveTrabajador(trabajador);
             return ResponseEntity.status(201).body(trabajadorSave);
         } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/productos")
+    public ResponseEntity<?> addProducto(@Valid @RequestBody Producto producto) {
+        try {
+            Producto productoSave = granjaService.saveProducto(producto);
+            return ResponseEntity.status(201).body(productoSave);
+        } catch (IOException e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
@@ -126,6 +156,16 @@ public class GranjaController {
         }
     }
 
+    @PutMapping("/productos/{id}")
+    public ResponseEntity<?> updateProducto(@PathVariable int id, @Valid @RequestBody Producto producto) {
+        try {
+            Producto productoUpdate = granjaService.updateProducto(id, producto);
+            return ResponseEntity.ok().body(productoUpdate);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
     //----- DELETE -----
 
     @DeleteMapping("/animales/{id}")
@@ -144,6 +184,16 @@ public class GranjaController {
             granjaService.deleteTrabajadorById(dni);
             return ResponseEntity.ok().body("Trabajador con dni "+dni+" eliminado correctamente.");
         } catch (RuntimeException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<?> deleteProducto(@PathVariable Integer id) {
+        try{
+            granjaService.deleteProductoById(id);
+            return ResponseEntity.ok().body("Producto con id "+id+" eliminado correctamente.");
+        } catch (IOException e){
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
