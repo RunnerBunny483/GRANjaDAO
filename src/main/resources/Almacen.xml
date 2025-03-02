@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<almacenes>
+    <almacen>
+        <id>1</id>
+        <nombre>Almacén Central</nombre>
+        <ubicacion>Madrid</ubicacion>
+        <numero_trabajadores>120</numero_trabajadores>
+        <metrosCuadrados>500.5</metrosCuadrados>
+    </almacen>
+    <almacen>
+        <id>2</id>
+        <nombre>Almacén Norte</nombre>
+        <ubicacion>Barcelona</ubicacion>
+        <numero_trabajadores>40</numero_trabajadores>
+        <metrosCuadrados>300.0</metrosCuadrados>
+    </almacen>
+    <almacen>
+        <id>3</id>
+        <nombre>Almacén Sur</nombre>
+        <ubicacion>Sevilla</ubicacion>
+        <numero_trabajadores>20</numero_trabajadores>
+        <metrosCuadrados>250.75</metrosCuadrados>
+    </almacen>
+</almacenes>
