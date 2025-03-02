@@ -16,32 +16,5 @@ import java.util.List;
 
 @Service
 public class GranjaService {
-    @Autowired
-    private AnimalRepository animalRepository;
 
-    @Autowired
-    private TrabajadorRepository trabajadorRepository;
-
-    @Autowired
-    private ProductoRepository productoRepository;
-
-    @Autowired
-    private AlmacenRepository  almacenRepository;
-
-    //OBTENER TODAS LAS LITAS
-    public List<Animal> getListAnimales() {
-        return animalRepository.findAll();
-    }
-
-    public List<Trabajador> getListTrabajadores() {
-        return trabajadorRepository.findAll();
-    }
-
-    public List<Producto> getListProductos() throws IOException {
-        return productoRepository.leerProductos();
-    }
-
-    public List<Almacen> getListAlmacenes() throws Exception {
-        return almacenRepository.getAlmacenes();
-    }
 }
