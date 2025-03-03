@@ -164,7 +164,7 @@ public class GranjaController {
     }
 
     @PutMapping("/productos/{id}")
-    public ResponseEntity<?> updateProducto(@PathVariable int id, @Valid @RequestBody Producto producto) {
+    public ResponseEntity<?> updateProducto(@PathVariable Integer id, @Valid @RequestBody Producto producto) {
         try {
             Producto productoUpdate = granjaService.updateProducto(id, producto);
             return ResponseEntity.ok().body(productoUpdate);
@@ -174,7 +174,7 @@ public class GranjaController {
     }
 
     @PutMapping("/almacenes/{id}")
-    public ResponseEntity<?> updateAlmacen(@PathVariable int id, @Valid @RequestBody Almacen almacen) {
+    public ResponseEntity<?> updateAlmacen(@PathVariable Integer id, @Valid @RequestBody Almacen almacen) {
         try {
             Almacen almacenUpdate = granjaService.updateAlmacen(id, almacen);
             return ResponseEntity.ok().body(almacenUpdate);

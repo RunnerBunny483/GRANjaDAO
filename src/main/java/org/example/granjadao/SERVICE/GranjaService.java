@@ -44,26 +44,43 @@ public class GranjaService {
         return almacenRepository.findById(id);
     }
 
-    public Almacen updateAlmacen(int id, Almacen almacen) throws Exception {
+    public Almacen updateAlmacen(Integer id, Almacen almacen) throws Exception {
         // Obtener la lista completa de almacenes
         List<Almacen> almacenes = almacenRepository.getAllAlmacenes();
 
         // Buscar el almacén por su ID
-        Almacen almacenExistente = almacenes.stream()
+        Almacen almacenUpdate = almacenes.stream()
                 .filter(a -> a.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Almacén no encontrado con ID: " + id));
 
+        //Si se está setteando un nuevo ID:
+        if(!almacen.getId().equals(id)) {
+            //Si ya existe un almacen con el ID del nuevo almacen, no permitir cambiarlo
+            Almacen almacenExistente = almacenRepository.findById(almacen.getId());
+            if(almacenExistente != null) {
+                throw new RuntimeException("Un almacén con ese ID ya existe: " + almacen.getId());
+            }
+            //Se borra el anterior objeto (usando el update porque es como un alias para el anterior):
+            almacenes.remove(almacenUpdate);
+            almacenRepository.deleteAlmacen(id);
+
+            //Se establece el nuevo Id
+            almacenUpdate.setId(almacen.getId());
+            //Se añade de nuevo a la lista:
+            almacenes.add(almacenUpdate);
+        }
+
         // Actualizar los datos del almacén
-        almacenExistente.setNombre(almacen.getNombre());
-        almacenExistente.setUbicacion(almacen.getUbicacion());
-        almacenExistente.setNumero_trabajadores(almacen.getNumero_trabajadores());
-        almacenExistente.setMetrosCuadrados(almacen.getMetrosCuadrados());
+        almacenUpdate.setNombre(almacen.getNombre());
+        almacenUpdate.setUbicacion(almacen.getUbicacion());
+        almacenUpdate.setNumero_trabajadores(almacen.getNumero_trabajadores());
+        almacenUpdate.setMetrosCuadrados(almacen.getMetrosCuadrados());
 
         // Guardar la lista actualizada en el archivo XML
         almacenRepository.guardarAlmacenesEnXML(almacenes);
 
-        return almacenExistente;
+        return almacenUpdate;
     }
 
     public void deleteAlmacenById(int id) throws Exception {
@@ -91,6 +108,23 @@ public class GranjaService {
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
+
+        //Si se está setteando un nuevo ID:
+        if(!producto.getId().equals(id)) {
+            //Si ya existe un producto con el ID del nuevo producto, no permitir cambiarlo
+            Producto productoExistente = productoRepository.findById(producto.getId());
+            if(productoExistente != null) {
+                throw new RuntimeException("Un producto con ese ID ya existe: " + producto.getId());
+            }
+            //Se borra el anterior objeto (usando el update porque es como un alias para el anterior):
+            productos.remove(productoUpdate);
+            productoRepository.deleteProducto(id);
+
+            //Se establece el nuevo Id
+            productoUpdate.setId(producto.getId());
+            //Se añade de nuevo a la lista:
+            productos.add(productoUpdate);
+        }
 
         productoUpdate.setNombre(producto.getNombre());
         productoUpdate.setDescripcion(producto.getDescripcion());
