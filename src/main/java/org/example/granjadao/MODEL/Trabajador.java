@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "trabajadores")
-@CacheConfig(cacheNames = "trabajadores")
 public class Trabajador {
     @Id
     @Size(max = 20)

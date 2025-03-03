@@ -38,10 +38,19 @@ public class ProductoRepository {
     public Producto escribirProducto(Producto producto) throws IOException {
         List<Producto> productos = leerProductos();
 
-        // Verificar si el ID ya existe
-        boolean idExiste = productos.stream().anyMatch(p -> p.getId() == producto.getId());
+        //Verificar si el ID ya existe
+        boolean idExiste = productos.stream().anyMatch(p -> p.getId().equals(producto.getId()));
+
+        //Manera imperativa con forEach:
+//        boolean idExisteForEach = false;
+//        for (Producto productoForEach : productos) {
+//            if (productoForEach.getId().equals(producto.getId())) {
+//                idExisteForEach = true;
+//            }
+//        }
+
         if (idExiste) {
-            throw new IllegalArgumentException("El ID del producto ya existe: " + producto.getId());
+            throw new RuntimeException("El ID del producto ya existe: " + producto.getId());
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaTXT, true))) { // Modo append
@@ -82,6 +91,16 @@ public class ProductoRepository {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
 
+        //Manera imperativa con forEach:
+//        Producto productoEncontrado = null;
+//        for (Producto productoForEach : productos) {
+//            if (productoForEach.getId() == id) {
+//                productoEncontrado = productoForEach;
+//                break;
+//            }
+//        }
+//        if(productoEncontrado == null) throw new RuntimeException("Producto no encontrado con ID: " + id);
+
         productos.remove(productoDelete);
         escribirProductos(productos);
     }
@@ -89,6 +108,9 @@ public class ProductoRepository {
     //Buscar por id
     public Producto findById(int id) throws IOException {
         List<Producto> productos = leerProductos();
-        return productos.stream().filter(producto -> producto.getId() == id).findFirst().orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
+        return productos.stream()
+                .filter(producto -> producto.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
 }

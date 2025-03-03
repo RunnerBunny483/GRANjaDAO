@@ -18,16 +18,16 @@ public class AlmacenRepository {
     private static final String xml = "Almacen.xml";
     private static final File file = new File("src/main/resources/" + xml);
 
-    //Obtener todos
+    //Obtener todos los almacenes
     public List<Almacen> getAllAlmacenes() throws Exception {
         JAXBContext context = JAXBContext.newInstance(AlmacenListWrapper.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        // Convertir el contenido del XML en un objeto de tipo AlmacenListWrapper
+        //Convertir el contenido del XML en un objeto de tipo AlmacenListWrapper
         AlmacenListWrapper wrapper = (AlmacenListWrapper) unmarshaller.unmarshal(file);
         return wrapper.getAlmacenes();
     }
 
-    // Guardar la lista de almacenes en el archivo XML
+    //Guardar la lista de almacenes en el archivo XML
     public void guardarAlmacenesEnXML(List<Almacen> almacenes) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(AlmacenListWrapper.class);
         Marshaller marshaller = context.createMarshaller();
@@ -36,24 +36,24 @@ public class AlmacenRepository {
         AlmacenListWrapper wrapper = new AlmacenListWrapper();
         wrapper.setAlmacenes(almacenes);
 
-        // Guardar en la ruta del archivo XML
-        marshaller.marshal(wrapper, new File("src/main/resources/" + xml));
+        //Guardar en la ruta del archivo XML
+        marshaller.marshal(wrapper, file);
     }
 
     public Almacen saveAlmacen(Almacen almacen) throws Exception {
-        // Obtener la lista actual de almacenes
+        //Obtener la lista actual de almacenes
         List<Almacen> almacenes = getAllAlmacenes();
 
-        // Verificar si el ID ya existe
+        //Verificar si el ID ya existe
         boolean idExiste = almacenes.stream().anyMatch(a -> a.getId().equals(almacen.getId()));
         if (idExiste) {
-            throw new IllegalArgumentException("El ID del almacén ya existe: " + almacen.getId());
+            throw new RuntimeException("El ID del almacén ya existe: " + almacen.getId());
         }
 
-        // Añadir el nuevo almacén a la lista
+        //Añadir el nuevo almacén a la lista
         almacenes.add(almacen);
 
-        // Guardar la lista actualizada en el archivo XML
+        //Guardar la lista actualizada en el archivo XML
         guardarAlmacenesEnXML(almacenes);
 
         return almacen;
@@ -67,7 +67,7 @@ public class AlmacenRepository {
                 .orElseThrow(() -> new RuntimeException("Almacén no encontrado con ID: " + id));
     }
 
-    // Eliminar un almacén por ID
+    //Eliminar un almacén por ID
     public void deleteAlmacen(int id) throws Exception {
         List<Almacen> almacenes = getAllAlmacenes();
         Almacen almacenEliminar = findById(id);
