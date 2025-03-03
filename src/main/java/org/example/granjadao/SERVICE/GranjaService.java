@@ -118,6 +118,9 @@ public class GranjaService {
     }
 
     public Animal saveAnimal(Animal animal) {
+        if (animalRepository.findById(animal.getId()).isPresent()) {
+            throw new RuntimeException("Un animal con ese ID ya existe: " + animal.getId());
+        }
         return animalRepository.save(animal);
     }
 
@@ -146,6 +149,9 @@ public class GranjaService {
     }
 
     public Trabajador saveTrabajador(Trabajador trabajador) {
+        if (trabajadorRepository.findById(trabajador.getDni()).isPresent()) {
+            throw new RuntimeException("Un trabajador con ese DNI ya existe: " + trabajador.getDni());
+        }
         return trabajadorRepository.save(trabajador);
     }
 
