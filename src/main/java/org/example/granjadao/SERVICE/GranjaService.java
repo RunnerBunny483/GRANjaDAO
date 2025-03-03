@@ -88,7 +88,7 @@ public class GranjaService {
         List<Producto> productos = productoRepository.leerProductos();
         // Buscar el producto por su ID
         Producto productoUpdate = productos.stream()
-                .filter(p -> p.getId() == id)
+                .filter(p -> p.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
 
