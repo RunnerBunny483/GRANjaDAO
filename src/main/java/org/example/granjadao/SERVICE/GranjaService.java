@@ -127,6 +127,18 @@ public class GranjaService {
     public Animal updateAnimal(Integer id, Animal animal) {
         Animal animalUpdate = animalRepository.findById(id).orElseThrow(() -> new RuntimeException("Animal no encontrado."));
 
+        //Si se está setteando un nuevo ID:
+        if(!animal.getId().equals(id)) {
+            //Si ya existe un animal con el ID del nuevo animal, no permitir cambiarlo
+            if(animalRepository.findById(animal.getId()).isPresent()){
+                throw new RuntimeException("Un animal con ese ID ya existe: " + animal.getId());
+            }
+            //Se establece el nuevoId
+            animalUpdate.setId(animal.getId());
+            //Se borra el anterior objeto:
+            animalRepository.deleteById(id);
+        }
+
         animalUpdate.setNombre(animal.getNombre());
         animalUpdate.setEspecie(animal.getEspecie());
 
